@@ -11,6 +11,31 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
+      class ErrorBoundary extends React.Component {
+        constructor(props) {
+          super(props);
+          this.state = { hasError: false, error: null };
+        }
+        
+        static getDerivedStateFromError(error) {
+          return { hasError: true, error: error };
+        }
+        
+        render() {
+          if (this.state.hasError) {
+            return (
+              <div>
+                <h1>Oops, something went wrong.</h1>
+                <p>We are working to resolve the error as quickly as possible.</p>
+                <p>The error is:</p>
+                <p>{this.state.error}</p>
+              </div>
+            );
+          }
+          
+          return this.props.children;
+        }
+      }
       class Greeting extends React.Component {
         render() {
           return <p><span className="lead">Ready to get started?</span> Sign in to this app!</p>;
@@ -19,15 +44,15 @@
       class BrunoApp extends React.Component {
         constructor(props) {
           super(props);
-          this.state = {signedIn: false};
+          this.state = { signedIn: false };
         }
         
         render() {
           return (
-            <div>
+            <ErrorBoundary>
               <h1>Bruno App</h1>
-              <Greeting isSignedIn={signedIn} />
-            </div>
+              <Greeting signedIn={signedIn} />
+            </ErrorBoundary>
           );
         }
       }
