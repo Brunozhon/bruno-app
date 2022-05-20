@@ -10,7 +10,7 @@
   <body>
     <div id="app">
       <h1>Bruno App</h1>
-      <p><router-link to="/">Home</router-link> <router-link :to="userUrl">Office</router-link></p>
+      <p><router-link to="/">Home</router-link> <router-link :to="userUrl">Office</router-link> <router-link :to="settingsUrl">Settings</router-link></p>
       <router-view></router-view>
     </div>
     <script>
@@ -79,6 +79,9 @@
         computed: {
           userUrl() {
             return `/user/${this.username}/`
+          },
+          settingsUrl() {
+            return `/user/${this.username}/settings/`
           }
         }
       });
