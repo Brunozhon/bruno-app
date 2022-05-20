@@ -29,6 +29,13 @@
         `
       }
       
+      const Settings = {
+        props: ["username"],
+        template: `
+        <p>Username: <input :value="username" /></p>
+        `
+      }
+      
       const NotFound = {
         template: `
         <p class="lead">404 Not Found</p>
@@ -45,6 +52,11 @@
         {
           path: "/user/:username/",
           component: User,
+          props: true
+        },
+        {
+          path: "/user/:username/settings/",
+          component: Settings,
           props: true
         },
         {
