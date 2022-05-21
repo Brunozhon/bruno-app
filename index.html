@@ -9,12 +9,12 @@
   </head>
   <body>
     <div id="app">
-      <h1>Bruno App</h1>
+      <p class="h1">Bruno App</p>
       <p><router-link to="/">Home</router-link> <router-link :to="userUrl">Office</router-link> <router-link :to="settingsUrl">Settings</router-link></p>
       <router-view></router-view>
     </div>
     <script>
-      const { createApp } = Vue;
+      const { createApp, computed } = Vue;
       
       const Home = {
         template: `
@@ -29,18 +29,18 @@
         `
       }
       
-      const Settings = {
-        props: ["username"],
-        template: `
-        <p>Username: <input :value="username" /></p>
-        `
-      }
-      
       const NotFound = {
         template: `
         <p class="lead">404 Not Found</p>
         <p>That's all we know.</p>
         <p>Use the links on the top to navigate to a different page.</p>
+        `
+      }
+      
+      const Notes = {
+        inject: ["notes"],
+        template: `
+        <p v-for="note in notes">{{ note.name }}</p>
         `
       }
       
@@ -52,11 +52,6 @@
         {
           path: "/user/:username/",
           component: User,
-          props: true
-        },
-        {
-          path: "/user/:username/settings/",
-          component: Settings,
           props: true
         },
         {
@@ -75,18 +70,15 @@
           return {
             username: "johndoe"
           };
-        },
-        computed: {
-          userUrl() {
-            return `/user/${this.username}/`
-          },
-          settingsUrl() {
-            return `/user/${this.username}/settings/`
-          }
         }
       });
       
       app.use(router);
+      app.provide("note", computed(() => {
+        name: "Note",
+        content: "This is my first note!"
+      }))
+      app.config.unwrapInjectedRef = true // Fallback
       
       app.mount("#app");
     </script>
