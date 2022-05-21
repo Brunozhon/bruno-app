@@ -75,8 +75,7 @@
       
       app.use(router);
       app.provide("note", computed(() => {
-        name: "Note",
-        content: "This is my first note!"
+        return { name: "Note", content: "This is my first note!" }
       }))
       app.config.unwrapInjectedRef = true // Fallback
       
